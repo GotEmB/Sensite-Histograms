@@ -7,11 +7,12 @@ library(rjson)
 
 args <- commandArgs(TRUE)
 phenomenon <- args[1]
+collection <- args[2]
 
 dbm <- mongoDbConnect("sensite", host="ds033699.mongolab.com", port=33699)
 auth <- dbAuthenticate(dbm, "sensite130", "sensite130")
 
-associationRecord <- dbGetQuery(dbm, "associations", sprintf("{phenomenon: \"%s\"}", phenomenon))[1, ]
+associationRecord <- dbGetQuery(dbm, collection, sprintf("{phenomenon: \"%s\"}", phenomenon))[1, ]
 sensors <- do.call(rbind, fromJSON(associationRecord[, "association"]))
 
 
